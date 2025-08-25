@@ -8,6 +8,7 @@
     <ul style="padding: 0; list-style: none; display: flex; gap: 0.5rem">
       <li><a href="/faultyweb">Home</a></li>
       {% if user.is_authenticated %}
+      <li><a href="/faultyweb/notes/">Notes</a></li>
       <li><a href="/faultyweb/accounts/logout/">Logout</a></li>
       {% else %}
       <li><a href="/faultyweb/accounts/login/">Login</a></li>

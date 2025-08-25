@@ -1,12 +1,30 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
-from .forms import RegistrationForm
+from .forms import RegistrationForm, NoteForm
+from .models import Note
 
 def index(request):
     return render(request, "faultyweb/index.html")
+
+def notes(request):
+    notes = Note.objects.all()
+    form = NoteForm
+    return render(request, "faultyweb/notes.html", {"form": form, "notes": notes})
+
+def add_note(request):
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        if form.is_valid():
+            content = form.cleaned_data["content"]
+            user = request.user
+            date_published = datetime.now()
+            note = Note(user=user, content=content, date_published=date_published)
+            note.save()
+    return redirect("/faultyweb/notes/")
 
 def register_view(request):
     if request.method == 'POST':

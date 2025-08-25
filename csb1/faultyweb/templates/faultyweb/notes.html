@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block content %}
+<h1>My Notes</h1>
+<h2>Add new note</h2>
+<form action="/faultyweb/addnote/" method="post">
+  {% csrf_token %} {{ form }}
+  <input type="submit" value="Submit" />
+</form>
+<h2>Your notes</h2>
+<ul>
+  {% for note in notes %}
+  <li>{{note.content}}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
