@@ -8,7 +8,11 @@
 <h2>Your notes</h2>
 <ul>
   {% for note in notes %}
-  <li>{{note.content}}</li>
+  <li>{{note.content|safe}}</li>
+  <!-- Issue: shown note is not escaped, and is coming directly from user via database -->
+  <!-- OWASP 2017: Cross-site scripting -->
+  <!-- Fix: do not treat the value as safe, Django will now escape it -->
+  <!-- <li>{{note.content}}</li> -->
   {% endfor %}
 </ul>
 {% endblock %}

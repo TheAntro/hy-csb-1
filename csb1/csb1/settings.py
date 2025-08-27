@@ -25,7 +25,11 @@ SECRET_KEY = 'django-insecure-+jb0m_hp6(e$61)yn=9+*en=7@u@2m2uj3n@ya5p+j!c&%oqcf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# This allows malicious user to modify the host, leading to potential issues (one issue introduced in /faultyweb/views.py index view)
+# OWASP 2017: Security misconfiguration
+ALLOWED_HOSTS = ['*']
+# Fix: do not allow any site to be treated as host
+# ALLOWED_HOSTS = []
 
 
 # Application definition
