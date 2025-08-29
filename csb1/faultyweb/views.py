@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.db import connection
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
@@ -35,6 +36,21 @@ def add_note(request):
             note = Note(user=user, content=content, date_published=date_published)
             note.save()
     return redirect("/faultyweb/notes/")
+
+def search_notes(request):
+    results = []
+    user = request.user
+    query = request.GET.get("q")
+    if query:
+        with connection.cursor() as cursor:
+            # Issue: vulnerable for SQL Injection, with e.g. a query like "' OR 1=1 --" returns all notes, not just notes from the user.
+            # OWASP 2017 top 10: SQL Injection
+            cursor.execute(f"SELECT * FROM faultyweb_note WHERE user_id = { user.id } AND content LIKE '%{query}%'")
+            results = cursor.fetchall()
+            # Fix: use Django ORM
+            # results = Note.objects.filter(user=user, content__icontains=query)
+    results = [result[1] for result in results]
+    return render(request, "faultyweb/search.html", {"results": results})
 
 def register_view(request):
     if request.method == 'POST':
