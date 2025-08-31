@@ -3,5 +3,6 @@
 {% if user.is_authenticated %}
 <p>Welcome {{user.username}}</p>
 {% else %}
-<p>Login to view content</p>
+<a href="{{ login_link }}">Login to view content</a>
+
 {% endif %} {% endblock %}

@@ -10,7 +10,9 @@ from .forms import RegistrationForm, NoteForm
 from .models import Note
 
 def index(request):
-    return render(request, "faultyweb/index.html")
+    # A link vulnerable to Host header attack, fix is in settings.py
+    login_link = request.build_absolute_uri('/faultyweb/login/')
+    return render(request, "faultyweb/index.html", {"login_link": login_link})
 
 # Issue: user authentication is not checked, anyone can access the page if they know the url
 # OWASP 2017: Broken access control
@@ -50,7 +52,7 @@ def search_notes(request):
             # Fix: use Django ORM
             # results = Note.objects.filter(user=user, content__icontains=query)
     results = [result[1] for result in results]
-    return render(request, "faultyweb/search.html", {"results": results})
+    return render(request, "faultyweb/search.html", {"results": results, "query": query})
 
 def register_view(request):
     if request.method == 'POST':

@@ -2,10 +2,12 @@
 
 <form method="get" action="">
   {% csrf_token %}
-  <input type="text" name="q" value="{{ query }}" />
+  <input type="text" name="q" placeholder="Type search query" value="" />
   <button type="submit">Search</button>
 </form>
 
-{% if results %} {% for result in results %}
+{% if query %}
+<p>Results for query: <em>{{query}}</em></p>
+{% endif %} {% if results %} {% for result in results %}
 <p>{{result}}</p>
 {% endfor %} {% endif %}{% endblock %}

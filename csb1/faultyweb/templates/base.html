@@ -9,12 +9,15 @@
       <li><a href="/faultyweb">Home</a></li>
       {% if user.is_authenticated %}
       <li><a href="/faultyweb/notes/">Notes</a></li>
+      <li><a href="/faultyweb/search/">Search</a></li>
       <li><a href="/faultyweb/accounts/logout/">Logout</a></li>
       {% else %}
       <li><a href="/faultyweb/accounts/login/">Login</a></li>
       <li><a href="/faultyweb/register/">Register</a></li>
       {% endif %}
     </ul>
-    {% block content %}{% endblock content %}
+    {% if user.is_authenticated %}
+    <p>Hello {{user}}</p>
+    {% endif %} {% block content %}{% endblock content %}
   </body>
 </html>
